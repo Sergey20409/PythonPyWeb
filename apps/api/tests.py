@@ -20,7 +20,7 @@ class AuthorViewSetTestCase(APITestCase):
         print(f'В таблице автор {Author.objects.count()} значения')
         url = reverse('authors-viewset-list')  # Получаем URL ссылку
         print(f"Проверяемы маршрут: {url}")
-        response = self.client.get(url)
+        response = self.client.get(url, {'page_size':1000})  # {'page_size':1000}
         print(f"Ответ от сервера: {response.status_code}")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         authors = Author.objects.all()

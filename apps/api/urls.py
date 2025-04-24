@@ -5,7 +5,7 @@ from django.urls import include
 from .views import AuthorViewSet
 from rest_framework.routers import DefaultRouter
 
-app_name = 'api'
+# app_name = 'api'
 
 router = DefaultRouter()
 router.register(r'authors_viewset', AuthorViewSet, basename='authors-viewset')
