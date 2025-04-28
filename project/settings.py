@@ -12,6 +12,15 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+DEBUG = os.getenv('DEBUG') == 'true'
+
+ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS').split(',')]
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,7 +56,9 @@ INSTALLED_APPS = [
     'apps.db_train_alternative',
     "debug_toolbar",
     'rest_framework',
-    'django_filters'
+    'django_filters',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
 ]
 
 
@@ -142,8 +153,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # Место для хранения (на сервере) статических файлов при выполнении collectstatic
+STATIC_URL = "static/"  # Папка в корне проекта, где будут собираться статические файлы
+if 'localhost' in ALLOWED_HOSTS:
+   STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Папка для локального проекта
+else:
+   STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # Папка для сервера
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Место для хранения (на сервере) медиафайлов
